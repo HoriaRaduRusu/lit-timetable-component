@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import {LitElement, html, css} from 'lit';
+import {LitElement, html, css, PropertyValues, nothing} from 'lit';
 import {customElement, property, state} from 'lit/decorators.js';
 
 export type TimetableEvent = {
@@ -62,6 +62,12 @@ export class CustomTimetable extends LitElement {
   headerText = 'Timetable';
 
   /**
+   * Whether or not the refresh button should be displayed
+   */
+  @property({type: Boolean, attribute: "refresh-enabled"})
+  refreshEnabled = false;
+
+  /**
    * Whether to display weekends or not
    */
   @property({type: Boolean})
@@ -85,14 +91,24 @@ export class CustomTimetable extends LitElement {
   @property({type: Boolean, attribute: "all-caps-headers"})
   allCapsHeaders = false;
   
+  /**
+   * The events to display in the timetable, written in JSON
+   */
+  @property({attribute: "displayed-events"})
+  displayedEvents: string = "";
+
+  @property({attribute: "style-src"})
+  styleSrc: string | undefined;
+
   @state()
   events: Array<TimetableEvent> = [];
 
   override render() {
     return html`
+      ${this.styleSrc ? html`<link rel='stylesheet' href='${this.styleSrc}'/>` : nothing};
       <div id="header-div">
       <span id="header-text">${this.headerText}</span>
-      <button @click=${this._launchRetrieveEventsEvent}>&#8635;</button>
+      ${this.refreshEnabled ? html`<button @click=${this._launchRetrieveEventsEvent}>&#8635;</button>` : nothing}
       </div>
       <table>
         <thead>
@@ -116,8 +132,14 @@ export class CustomTimetable extends LitElement {
     super.connectedCallback();
     this._launchRetrieveEventsEvent();
   }
+  
+  protected override willUpdate(_changedProperties: PropertyValues): void {
+    if (_changedProperties.has("displayedEvents")) {
+      this.events = JSON.parse(this.displayedEvents) as Array<TimetableEvent>;
+    }    
+  }
 
-  private _getWeekdayHeaders() {
+  private _getWeekdayHeaders(): Array<string> {
     let weekdays = this.longNames ? [...CustomTimetable.LONG_WEEKDAYS] : [...CustomTimetable.SHORT_WEEKDAYS];
     if (!this.weekends) {
       weekdays = weekdays.slice(0, -2);
@@ -130,7 +152,7 @@ export class CustomTimetable extends LitElement {
     return weekdays;
   }
 
-  private _getWeekdaysInOrder() {
+  private _getWeekdaysInOrder(): Array<string> {
     let weekdays = [...CustomTimetable.LONG_WEEKDAYS];
     if (!this.weekends) {
       weekdays = weekdays.slice(0, -2);
@@ -140,7 +162,7 @@ export class CustomTimetable extends LitElement {
     return weekdays;
   }
 
-  private _getEventsForWeekdayInOrder(weekday: string) {
+  private _getEventsForWeekdayInOrder(weekday: string): Array<TimetableEvent> {
     return this.events
       .filter((event) => event.weekday === weekday)
       .sort((firstEvent, secondEvent) => {
@@ -161,7 +183,7 @@ export class CustomTimetable extends LitElement {
       })
   }
 
-  private _launchRetrieveEventsEvent() {
+  private _launchRetrieveEventsEvent(): void {
     const event = new CustomEvent('retrieveEvents', {bubbles: true, composed: true, detail: {setEvents: (newEvents: Array<TimetableEvent>) => {this.events = newEvents}}});
     this.dispatchEvent(event);
   }
