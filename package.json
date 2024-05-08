@@ -3,6 +3,7 @@
   "version": "1.0.3",
   "description": "A simple timetable component",
   "main": "custom-timetable.bundled.js",
+  "module": "custom-timetable.bundled.js",
   "dependencies": {
     "lit": "^3.0.0"
   },
