@@ -4,6 +4,7 @@
   "description": "A simple timetable component",
   "main": "custom-timetable.bundled.js",
   "module": "custom-timetable.bundled.js",
+  "types": "custom-timetable.d.ts",
   "dependencies": {
     "lit": "^3.0.0"
   },
