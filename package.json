@@ -1,6 +1,6 @@
 {
   "name": "custom-timetable",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A simple timetable component",
   "main": "custom-timetable.bundled.js",
   "module": "custom-timetable.bundled.js",
