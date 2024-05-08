@@ -95,7 +95,7 @@ export class CustomTimetable extends LitElement {
    * The events to display in the timetable, written in JSON
    */
   @property({attribute: "displayed-events"})
-  displayedEvents: string = "";
+  displayedEvents: string | undefined;
 
   @property({attribute: "style-src"})
   styleSrc: string | undefined;
@@ -134,7 +134,7 @@ export class CustomTimetable extends LitElement {
   }
   
   protected override willUpdate(_changedProperties: PropertyValues): void {
-    if (_changedProperties.has("displayedEvents")) {
+    if (_changedProperties.has("displayedEvents") && this.displayedEvents !== undefined) {
       this.events = JSON.parse(this.displayedEvents) as Array<TimetableEvent>;
     }    
   }

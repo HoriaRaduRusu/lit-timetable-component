@@ -46,7 +46,7 @@ export declare class CustomTimetable extends LitElement {
     /**
      * The events to display in the timetable, written in JSON
      */
-    displayedEvents: string;
+    displayedEvents: string | undefined;
     styleSrc: string | undefined;
     events: Array<TimetableEvent>;
     render(): import("lit-html").TemplateResult<1>;
