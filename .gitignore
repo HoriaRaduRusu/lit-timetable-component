@@ -1,12 +1,10 @@
 /node_modules/
 /lib/
 /test/
+/dev/
 custom-elements.json
 # top level source
 custom-timetable.js
 custom-timetable.js.map
-custom-timetable.d.ts
-custom-timetable.d.ts.map
 # only generated for size check
 custom-timetable.bundled.js
-/dev/
