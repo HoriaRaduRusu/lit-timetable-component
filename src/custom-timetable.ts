@@ -105,7 +105,7 @@ export class CustomTimetable extends LitElement {
 
   override render() {
     return html`
-      ${this.styleSrc ? html`<link rel='stylesheet' href='${this.styleSrc}'/>` : nothing};
+      ${this.styleSrc ? html`<link rel='stylesheet' href='${this.styleSrc}'/>` : nothing}
       <div id="header-div">
       <span id="header-text">${this.headerText}</span>
       ${this.refreshEnabled ? html`<button @click=${this._launchRetrieveEventsEvent}>&#8635;</button>` : nothing}
